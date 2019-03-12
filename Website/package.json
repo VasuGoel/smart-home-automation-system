@@ -1,0 +1,19 @@
+{
+  "name": "uautomate",
+  "version": "1.0.0",
+  "description": "Intelligent Home Automation System to automate your entire house with features like motion detection, voice control and so much more.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/VasuGoel/smart-home-automation-system.git"
+  },
+  "author": "Vasu Goel",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/VasuGoel/smart-home-automation-system/issues"
+  },
+  "homepage": "https://github.com/VasuGoel/smart-home-automation-system#readme"
+}
