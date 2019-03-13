@@ -9,6 +9,11 @@ app.set("view engine", "ejs");
 
 // RESTful Routes
 
+// Index Route
+app.get("/", (req, res) => {
+      res.render("index");
+});
+
 // Dashboard Route
 app.get("/dashboard", (req, res) => {
       res.render("dashboard");   
