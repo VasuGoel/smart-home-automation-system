@@ -6,3 +6,15 @@ const express = require("express"),
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
+
+// RESTful Routes
+
+// Dashboard Route
+app.get("/dashboard", (req, res) => {
+      res.render("dashboard");   
+});
+
+// Starts a UNIX socket and listens for connections on the given path
+app.listen(process.env.PORT, process.env.IP, () => {
+    console.log("Server has started...");
+});
