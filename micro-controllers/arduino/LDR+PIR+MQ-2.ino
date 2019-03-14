@@ -16,6 +16,14 @@ int LDRThreshold = 1000;
 long lastDebounceTime = 0;  
 long debounceDelay = 10000;
 
+
+int redLed = 12;
+int greenLed = 11;
+int buzzer = 10;
+int smokeA0 = A5;
+// MQ-2 Sensor Threshold Value.
+int sensorThres = 400;
+
 void setup() {
   // Pin for relay module set as output
   pinMode(relay, OUTPUT);
@@ -25,6 +33,13 @@ void setup() {
   // If the conditions are met, Triggers detectMotion function on rising mode to turn the relay on.
   attachInterrupt(digitalPinToInterrupt(PIRInterrupt), detectMotion, RISING);
   // Serial communication for debugging purposes
+
+
+  pinMode(redLed, OUTPUT);
+  pinMode(greenLed, OUTPUT);
+  pinMode(buzzer, OUTPUT);
+  pinMode(smokeA0, INPUT);
+  
   Serial.begin(9600);
 }
 
@@ -36,6 +51,27 @@ void loop() {
     Serial.println("OFF");
   }
   delay(50);
+
+  {
+  int analogSensor = analogRead(smokeA0);
+
+  Serial.print("Pin A0: ");
+  Serial.println(analogSensor);
+  // Check if Reading reached Threshold Value.
+  if (analogSensor > sensorThres)
+  {
+    digitalWrite(redLed, HIGH);
+    digitalWrite(greenLed, LOW);
+    tone(buzzer, 1000, 200);
+  }
+  else
+  {
+    digitalWrite(redLed, LOW);
+    digitalWrite(greenLed, HIGH);
+    noTone(buzzer);
+  }
+  delay(100);
+}
 }
 
 void detectMotion() {
