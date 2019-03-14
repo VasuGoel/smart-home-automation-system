@@ -6,18 +6,26 @@ String header;                                              // Variable to store
 
 String output5State = "off";                                // Auxiliar variables to store the current output state
 String output4State = "off";
+String output14State = "off";
+String output12State = "off";
 
 const int output5 = 5;                                      // Assign output variables to GPIO pins                                                        
 const int output4 = 4;
+const int output14 = 14;
+const int output12 = 12;
 
 void setup() {
   Serial.begin(115200);
   
   pinMode(output5, OUTPUT);                                 // Initialize the output variables as outputs
   pinMode(output4, OUTPUT);
+  pinMode(output14, OUTPUT);
+  pinMode(output12, OUTPUT);
   
   digitalWrite(output5, LOW);                               // Set outputs to LOW
   digitalWrite(output4, LOW);
+  digitalWrite(output14, LOW);
+  digitalWrite(output12, LOW);
 
   
   Serial.print("Connecting to ");                          // Connect to Wi-Fi network with SSID and password
@@ -74,6 +82,22 @@ void loop(){
               Serial.println("GPIO 4 off");
               output4State = "off";
               digitalWrite(output4, LOW);
+            } else if (header.indexOf("GET /14/on") >= 0) {
+              Serial.println("GPIO 14 on");
+              output14State = "on";
+              digitalWrite(output14, HIGH);
+            } else if (header.indexOf("GET /14/off") >= 0) {
+              Serial.println("GPIO 14 off");
+              output14State = "off";
+              digitalWrite(output14, LOW);
+            } else if (header.indexOf("GET /12/on") >= 0) {
+              Serial.println("GPIO 12 on");
+              output12State = "on";
+              digitalWrite(output12, HIGH);
+            } else if (header.indexOf("GET /12/off") >= 0) {
+              Serial.println("GPIO 12 off");
+              output12State = "off";
+              digitalWrite(output12, LOW);
             }
             
             
@@ -106,6 +130,19 @@ void loop(){
               client.println("<p><a href=\"/4/off\"><button class=\"button button2\">OFF</button></a></p>");
             }
   
+            client.println("<p>GPIO 14 - State " + output14State + "</p>");                                                   // Display current state, and ON/OFF buttons for GPIO 14       
+            if (output14State=="off") {                                                                                       // If the output14State is off, it displays the ON button
+              client.println("<p><a href=\"/14/on\"><button class=\"button\">ON</button></a></p>");
+            } else {
+              client.println("<p><a href=\"/14/off\"><button class=\"button button2\">OFF</button></a></p>");
+            }
+  
+            client.println("<p>GPIO 12 - State " + output12State + "</p>");                                                   // Display current state, and ON/OFF buttons for GPIO 12       
+            if (output12State=="off") {                                                                                       // If the output4State is off, it displays the ON button 
+              client.println("<p><a href=\"/12/on\"><button class=\"button\">ON</button></a></p>");
+            } else {
+              client.println("<p><a href=\"/12/off\"><button class=\"button button2\">OFF</button></a></p>");
+            }
             client.println("</body></html>");
             
             client.println();                                                       // The HTTP response ends with another blank line
