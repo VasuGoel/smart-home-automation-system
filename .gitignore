@@ -1,2 +1,4 @@
 node_modules
 website/public/css/style.css
+website/views/index.ejs
+website/views/dashboard.ejs
