@@ -1,4 +1,3 @@
 node_modules
 website/public/css/style.css
 *.ejs
-website/views/partials/header.ejs
