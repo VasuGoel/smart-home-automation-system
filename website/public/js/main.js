@@ -12,11 +12,23 @@ jQuery(document).ready(function(event){
     if( !isAnimating ) changePage(newPage, true);
     firstLoad = true;
     
-    if(newPage == "/")
-        document.title = "üAutomate - Intelligent Home Automation System - Home";
-    else
-        document.title = $(this).text() + " - üAutomate"
+    documentTitle(newPage);
+    
   });
+
+  // Function to change the title even after the website has loaded (after the page-transitions)
+  const documentTitle = (newPage) => {
+      if(newPage === "/")
+          document.title = "üAutomate - Intelligent Home Automation System - Home";
+      else if(newPage === "/about")
+          document.title = "About Us - üAutomate";
+      else if(newPage === "/contact")
+          document.title = "Contact Us - üAutomate";    
+      else if(newPage === "/login")
+          document.title = "Login - üAutomate";    
+      else if(newPage === "/signup")
+          document.title = "Sign Up - üAutomate";
+  };
 
   //detect the 'popstate' event - e.g. user clicking the back button
   $(window).on('popstate', function() {
