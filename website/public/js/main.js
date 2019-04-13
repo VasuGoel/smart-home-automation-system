@@ -11,6 +11,11 @@ jQuery(document).ready(function(event){
     //if the page is not already being animated - trigger animation
     if( !isAnimating ) changePage(newPage, true);
     firstLoad = true;
+    
+    if(newPage == "/")
+        document.title = "üAutomate - Intelligent Home Automation System - Home";
+    else
+        document.title = $(this).text() + " - üAutomate"
   });
 
   //detect the 'popstate' event - e.g. user clicking the back button
