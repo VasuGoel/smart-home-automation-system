@@ -26,6 +26,17 @@ app.get("/about", (req, res) => {
       res.render("about");   
 });
 
+
+// login route
+app.get("/login", (req, res) => {
+      res.render("login");   
+});
+
+// signup route
+app.get("/signup", (req, res) => {
+      res.render("signup");   
+});
+
 // Starts a UNIX socket and listens for connections on the given path
 app.listen(process.env.PORT, process.env.IP, () => {
     console.log("Server has started...");
