@@ -21,6 +21,10 @@ app.get("/contact", (req, res) => {
       res.render("contact");   
 });
 
+// about route
+app.get("/about", (req, res) => {
+      res.render("about");   
+});
 
 // Starts a UNIX socket and listens for connections on the given path
 app.listen(process.env.PORT, process.env.IP, () => {
