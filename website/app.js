@@ -11,12 +11,17 @@ app.set("view engine", "ejs");
 
 // RESTful Routes
 
-// Index Route
+// index route
 app.get("/", (req, res) => {
       res.render("index");
 });
 
-// Dashboard Route
+// contact route
+app.get("/contact", (req, res) => {
+      res.render("contact");   
+});
+
+// dashboard route
 app.get("/dashboard", (req, res) => {
       res.render("dashboard");   
 });
