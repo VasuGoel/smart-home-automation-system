@@ -1,32 +1,22 @@
 const express = require("express"),
-      app = express(),
-      bodyParser = require("body-parser"),
       mongoose = require("mongoose"),
-      methodOverride = require("method-override"),
-      User = require('./models/user'),
+      passport = require("passport"),
+      bodyParser = require("body-parser"),
+      User = require("./models/user"),
+      LocalStrategy = require("passport-local"),
+      passportLocalMongoose = require("passport-local-mongoose");
       
-      passport = require('passport'),
-      LocalStrategy = require('passport-local'),
-      passportLocalMongoose = require('passport-local-mongoose');
-      
-
-// App Config
+mongoose.connect("mongodb://localhost/auth", {useNewUrlParser: true});
+const app = express();
+app.set('view engine', 'ejs');
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({extended: true}));
-app.set("view engine", "ejs");
-app.use(methodOverride("_method"));
-
-// Mongoose Config
-mongoose.connect("mongodb://localhost/uAutomate", {useNewUrlParser: true});
-
-// Session config
-app.use(require('express-session')({
-    secret: "I think Vasu did a pretty good job with this project.",
+app.use(require("express-session")({
+    secret: "Vasu is actually pretty frickin funny",
     resave: false,
     saveUninitialized: false
 }));
 
-// Passport Auth config
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -72,20 +62,18 @@ app.get("/account/signup", (req, res) => {
 // After creation redirect user to account page
 app.post("/account", (req, res) => {
       const newUser = new User({
-            // name: req.body.user.firstname + " " + req.body.user.lastname,
-            username: req.body.user.username,
-            // email: req.body.user.email
+            name: req.body.firstname + " " + req.body.lastname,
+            username: req.body.username,
+            email: req.body.email
       });
-      User.register(newUser, req.body.user.password, (err, user) => {
+      User.register(newUser, req.body.password, (err, user) => {
             if(err) {
-                  console.log(err);
-                  res.render("signup");
+                console.log(err);
+                return res.render('signup');
             }
-            res.redirect("/account/login");
-            // passport.authenticate("local")(req, res, () => {
-            //       res.send(req.body.user.username);
-            //       // res.redirect("/" + req.body.user.username);   
-            // });
+            passport.authenticate("local")(req, res, () => {
+                res.redirect("/" + req.body.username);
+            });
       });
 });
 
@@ -97,24 +85,25 @@ app.get("/account/login", (req, res) => {
 // Logging in logic
 // middleware pass.authenticate runs after call to /account/login and before (req, res)
 app.post("/account/login", passport.authenticate("local", {
-      // For testing pusposes only
-      successRedirect: "/user",
+    //   successRedirect: "/user",
       failureRedirect: "/account/login"
 }), (req, res) => {
-      
+       res.redirect("/" + req.body.username);
 });
 
 // Logout route
+// app.get("/account/logout", (req, res) => {
+//       req.session.destroy((err) => {
+//             if(err) {
+//                   console.error(err);
+//             }
+//             res.redirect('/');
+//       });
+// });
 app.get("/account/logout", (req, res) => {
-      req.session.destroy((err) => {
-            if(err) {
-                  console.error(err);
-            }
-            res.redirect('/');
-      });
+    req.logout();
+    res.redirect("/");
 });
-
-
 
 // Middleware function isLoggedIn() to check if user is still authenticated
 function isLoggedIn(req, res, next) {
