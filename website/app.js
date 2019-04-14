@@ -3,6 +3,7 @@ const express = require("express"),
       bodyParser = require("body-parser"),
       mongoose = require("mongoose"),
       methodOverride = require("method-override"),
+      User = require('./models/user'),
       
       passport = require('passport'),
       LocalStrategy = require('passport-local'),
@@ -14,6 +15,9 @@ app.use(express.static("public"));
 app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
 app.use(methodOverride("_method"));
+
+// Mongoose Config
+mongoose.connect("mongodb://localhost/uAutomate", {useNewUrlParser: true});
 
 // Session config
 app.use(require('express-session')({
@@ -28,10 +32,6 @@ app.use(passport.session());
 
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
-
-// Mongoose Config
-mongoose.connect("mongodb://localhost/uAutomate", {useNewUrlParser: true});
-const User = require('./models/user');
 
 
 // ------------------------------------------------------------------------
@@ -71,17 +71,21 @@ app.get("/account/signup", (req, res) => {
 
 // Creating user POST route - Create route
 app.post("/account", (req, res) => {
-      res.send("User Signing up");
-      const name = req.body.user.firstName + " " + req.body.user.lastName;
-      console.log("Name: " + name);
-      console.log("Username: " + req.body.user.userName);
-      console.log("Email: "+ req.body.user.email);
-      console.log("Password: " + req.body.user.password);
+      User.register(new User({username: req.body.user.username}), req.body.user.password, (err, user) => {
+            if(err) {
+                  console.error(err);
+                  // return res.redirect("/account/signup");
+                  res.render("signup");
+            }
+            passport.authenticate("local")(req, res, () => {
+               res.redirect("/account/" + req.body.user.username);   
+            });
+      });
 });
 
-// User with username (from mongodb) account page - Show Route
+// User (stored in mongodb) account page - Show Route
 app.get("/account/:username", (req, res) => {
-      res.render("account");
+      res.render("account", {username: req.params.username});
 });
 
 
