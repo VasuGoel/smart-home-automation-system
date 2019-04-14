@@ -24,9 +24,9 @@ jQuery(document).ready(function(event){
           document.title = "About Us - üAutomate";
       else if(newPage === "/contact")
           document.title = "Contact Us - üAutomate";    
-      else if(newPage === "/login")
+      else if(newPage === "/account/login")
           document.title = "Login - üAutomate";    
-      else if(newPage === "/signup")
+      else if(newPage === "/account/signup")
           document.title = "Sign Up - üAutomate";
   };
 
