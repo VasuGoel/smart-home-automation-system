@@ -39,16 +39,31 @@ app.get("/about", (req, res) => {
       res.render("about");   
 });
 
-
 // Login Route
-app.get("/login", (req, res) => {
+app.get("/account/login", (req, res) => {
       res.render("login");   
 });
 
 // Signup Route
-app.get("/signup", (req, res) => {
+app.get("/account/signup", (req, res) => {
       res.render("signup");   
 });
+
+// User Account POST Route
+app.post("/account/:user", (req, res) => {
+      res.send("User Signing up");
+});
+
+// User Account GET Route
+app.get("/account/:user", (req, res) => {
+      res.send(req.params.user + " Account Page");   
+});
+
+// /account redirects to login page
+app.get("/account", (req, res) => {
+      res.redirect("/account/login");   
+});
+
 
 // Starts a UNIX socket and listens for connections on the given path
 app.listen(process.env.PORT, process.env.IP, () => {
