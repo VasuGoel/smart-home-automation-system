@@ -30,6 +30,7 @@ app.use(require('express-session')({
 app.use(passport.initialize());
 app.use(passport.session());
 
+passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
@@ -37,6 +38,7 @@ passport.deserializeUser(User.deserializeUser());
 // ------------------------------------------------------------------------
 
 // RESTful Routes
+
 // Index route
 app.get("/", (req, res) => {
       res.render("index");
@@ -52,11 +54,39 @@ app.get("/about", (req, res) => {
       res.render("about");   
 });
 
+// User (stored in mongodb) account page - Show Route
+// isLoggedIn is a middleware function at the bottom to check if user is still logged in
+app.get("/:username", isLoggedIn, (req, res) => {
+      res.render("account", {username: req.params.username});
+});
+
 
 // Auth Routes
-// /account redirects to login page
-app.get("/account", (req, res) => {
-      res.redirect("/account/login");   
+
+// Signup page - New route
+app.get("/account/signup", (req, res) => {
+      res.render("signup");   
+});
+
+// Creating user - Create route
+// After creation redirect user to account page
+app.post("/account", (req, res) => {
+      const newUser = new User({
+            // name: req.body.user.firstname + " " + req.body.user.lastname,
+            username: req.body.user.username,
+            // email: req.body.user.email
+      });
+      User.register(newUser, req.body.user.password, (err, user) => {
+            if(err) {
+                  console.log(err);
+                  res.render("signup");
+            }
+            res.redirect("/account/login");
+            // passport.authenticate("local")(req, res, () => {
+            //       res.send(req.body.user.username);
+            //       // res.redirect("/" + req.body.user.username);   
+            // });
+      });
 });
 
 // Login page route
@@ -64,30 +94,35 @@ app.get("/account/login", (req, res) => {
       res.render("login");   
 });
 
-// Signup page - New route
-app.get("/account/signup", (req, res) => {
-      res.render("signup");   
+// Logging in logic
+// middleware pass.authenticate runs after call to /account/login and before (req, res)
+app.post("/account/login", passport.authenticate("local", {
+      // For testing pusposes only
+      successRedirect: "/user",
+      failureRedirect: "/account/login"
+}), (req, res) => {
+      
 });
 
-// Creating user POST route - Create route
-app.post("/account", (req, res) => {
-      User.register(new User({username: req.body.user.username}), req.body.user.password, (err, user) => {
+// Logout route
+app.get("/account/logout", (req, res) => {
+      req.session.destroy((err) => {
             if(err) {
                   console.error(err);
-                  // return res.redirect("/account/signup");
-                  res.render("signup");
             }
-            passport.authenticate("local")(req, res, () => {
-               res.redirect("/account/" + req.body.user.username);   
-            });
+            res.redirect('/');
       });
 });
 
-// User (stored in mongodb) account page - Show Route
-app.get("/account/:username", (req, res) => {
-      res.render("account", {username: req.params.username});
-});
 
+
+// Middleware function isLoggedIn() to check if user is still authenticated
+function isLoggedIn(req, res, next) {
+      if(req.isAuthenticated()) {
+            return next();
+      }
+      res.redirect("/account/login");
+}
 
 
 // Starts a UNIX socket and listens for connections on the given path
