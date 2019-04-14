@@ -20,7 +20,11 @@
     "body-parser": "^1.18.3",
     "ejs": "^2.6.1",
     "express": "^4.16.4",
+    "express-session": "^1.16.1",
     "method-override": "^3.0.0",
-    "mongoose": "^5.4.19"
+    "mongoose": "^5.4.19",
+    "passport": "^0.4.0",
+    "passport-local": "^1.0.0",
+    "passport-local-mongoose": "^5.0.1"
   }
 }
