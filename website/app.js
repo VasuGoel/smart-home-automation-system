@@ -10,6 +10,17 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
 app.use(methodOverride("_method"));
 
+// Mongoose Config/ userSchema/ User Model
+mongoose.connect("mongodb://localhost/uAutomate", {useNewUrlParser: true});
+
+const userSchema = mongoose.Schema({
+      name: String,
+      email: String,
+      password: String
+}); 
+
+const User = mongoose.model("User", userSchema);
+
 
 // RESTful Routes
 
