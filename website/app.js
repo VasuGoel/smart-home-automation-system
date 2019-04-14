@@ -2,7 +2,12 @@ const express = require("express"),
       app = express(),
       bodyParser = require("body-parser"),
       mongoose = require("mongoose"),
-      methodOverride = require("method-override");
+      methodOverride = require("method-override"),
+      
+      passport = require('passport'),
+      LocalStrategy = require('passport-local'),
+      passportLocalMongoose = require('passport-local-mongoose');
+      
 
 // App Config
 app.use(express.static("public"));
@@ -10,21 +15,28 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
 app.use(methodOverride("_method"));
 
-// Mongoose Config/ userSchema/ User Model
+// Session config
+app.use(require('express-session')({
+    secret: "I think Vasu did a pretty good job with this project.",
+    resave: false,
+    saveUninitialized: false
+}));
+
+// Passport Auth config
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
+// Mongoose Config
 mongoose.connect("mongodb://localhost/uAutomate", {useNewUrlParser: true});
+const User = require('./models/user');
 
-const userSchema = mongoose.Schema({
-      name: String,
-      username: String,
-      email: String,
-      password: String
-}); 
 
-const User = mongoose.model("User", userSchema);
-
+// ------------------------------------------------------------------------
 
 // RESTful Routes
-
 // Index route
 app.get("/", (req, res) => {
       res.render("index");
@@ -40,6 +52,8 @@ app.get("/about", (req, res) => {
       res.render("about");   
 });
 
+
+// Auth Routes
 // /account redirects to login page
 app.get("/account", (req, res) => {
       res.redirect("/account/login");   
@@ -65,9 +79,9 @@ app.post("/account", (req, res) => {
       console.log("Password: " + req.body.user.password);
 });
 
-// User with id (mongodb _id) account page - Show Route
-app.get("/account/:id", (req, res) => {
-      res.send(req.params.id + " Account Page"); 
+// User with username (from mongodb) account page - Show Route
+app.get("/account/:username", (req, res) => {
+      res.render("account");
 });
 
 
