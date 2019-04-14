@@ -15,6 +15,7 @@ mongoose.connect("mongodb://localhost/uAutomate", {useNewUrlParser: true});
 
 const userSchema = mongoose.Schema({
       name: String,
+      username: String,
       email: String,
       password: String
 }); 
@@ -24,39 +25,19 @@ const User = mongoose.model("User", userSchema);
 
 // RESTful Routes
 
-// Index Route
+// Index route
 app.get("/", (req, res) => {
       res.render("index");
 });
 
-// Contact Route
+// Contact page route
 app.get("/contact", (req, res) => {
       res.render("contact");   
 });
 
-// About Route
+// About page route
 app.get("/about", (req, res) => {
       res.render("about");   
-});
-
-// Login Route
-app.get("/account/login", (req, res) => {
-      res.render("login");   
-});
-
-// Signup Route
-app.get("/account/signup", (req, res) => {
-      res.render("signup");   
-});
-
-// User Account POST Route
-app.post("/account/:user", (req, res) => {
-      res.send("User Signing up");
-});
-
-// User Account GET Route
-app.get("/account/:user", (req, res) => {
-      res.send(req.params.user + " Account Page");   
 });
 
 // /account redirects to login page
@@ -64,8 +45,34 @@ app.get("/account", (req, res) => {
       res.redirect("/account/login");   
 });
 
+// Login page route
+app.get("/account/login", (req, res) => {
+      res.render("login");   
+});
+
+// Signup page - New route
+app.get("/account/signup", (req, res) => {
+      res.render("signup");   
+});
+
+// Creating user POST route - Create route
+app.post("/account", (req, res) => {
+      res.send("User Signing up");
+      const name = req.body.user.firstName + " " + req.body.user.lastName;
+      console.log("Name: " + name);
+      console.log("Username: " + req.body.user.userName);
+      console.log("Email: "+ req.body.user.email);
+      console.log("Password: " + req.body.user.password);
+});
+
+// User with id (mongodb _id) account page - Show Route
+app.get("/account/:id", (req, res) => {
+      res.send(req.params.id + " Account Page"); 
+});
+
+
 
 // Starts a UNIX socket and listens for connections on the given path
 app.listen(process.env.PORT, process.env.IP, () => {
-    console.log("Server has started...");
+    console.log("üAutomate server has started...");
 });
