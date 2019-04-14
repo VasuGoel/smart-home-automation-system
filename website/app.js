@@ -1,38 +1,40 @@
-/*global require*/
-/*global process*/
 const express = require("express"),
       app = express(),
-      bodyParser = require("body-parser");
+      bodyParser = require("body-parser"),
+      mongoose = require("mongoose"),
+      methodOverride = require("method-override");
 
 // App Config
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
+app.use(methodOverride("_method"));
+
 
 // RESTful Routes
 
-// index route
+// Index Route
 app.get("/", (req, res) => {
       res.render("index");
 });
 
-// contact route
+// Contact Route
 app.get("/contact", (req, res) => {
       res.render("contact");   
 });
 
-// about route
+// About Route
 app.get("/about", (req, res) => {
       res.render("about");   
 });
 
 
-// login route
+// Login Route
 app.get("/login", (req, res) => {
       res.render("login");   
 });
 
-// signup route
+// Signup Route
 app.get("/signup", (req, res) => {
       res.render("signup");   
 });
