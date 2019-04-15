@@ -92,17 +92,13 @@ app.post("/account/login", passport.authenticate("local", {
 });
 
 // Logout route
-// app.get("/account/logout", (req, res) => {
-//       req.session.destroy((err) => {
-//             if(err) {
-//                   console.error(err);
-//             }
-//             res.redirect('/');
-//       });
-// });
 app.get("/account/logout", (req, res) => {
-    req.logout();
-    res.redirect("/");
+      req.session.destroy((err) => {
+            if(err) {
+                  console.error(err);
+            }
+            res.redirect('/');
+      });
 });
 
 // Middleware function isLoggedIn() to check if user is still authenticated
