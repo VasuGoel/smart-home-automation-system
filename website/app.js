@@ -6,11 +6,15 @@ const express = require("express"),
       LocalStrategy = require("passport-local"),
       passportLocalMongoose = require("passport-local-mongoose");
       
+// Mongoose config
 mongoose.connect("mongodb://localhost/auth", {useNewUrlParser: true});
+
+// App config
 const app = express();
 app.set('view engine', 'ejs');
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({extended: true}));
+
 app.use(require("express-session")({
     secret: "Vasu is actually pretty frickin funny",
     resave: false,
@@ -20,6 +24,7 @@ app.use(require("express-session")({
 app.use(passport.initialize());
 app.use(passport.session());
 
+// Passport config
 passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
@@ -108,6 +113,9 @@ function isLoggedIn(req, res, next) {
       }
       res.redirect("/account/login");
 }
+
+
+// Contact fomr submission
 
 
 // Starts a UNIX socket and listens for connections on the given path
