@@ -32,7 +32,7 @@ passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
 
-// ------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------
 
 // RESTful Routes
 
@@ -58,6 +58,7 @@ app.get("/:username", isLoggedIn, (req, res) => {
 });
 
 
+// ----------------------------------------------------------------------------------------
 // Auth Routes
 
 // Signup page - New route
@@ -117,6 +118,8 @@ function isLoggedIn(req, res, next) {
 }
 
 
+// ----------------------------------------------------------------------------------------
+
 // Contact form submission route
 app.post("/contact", (req, res) => {
       const name = req.body.cf_name;
@@ -168,12 +171,13 @@ app.post("/contact", (req, res) => {
     });
 });
 
-
 // render thank you page upon successful form submission
 app.get("/contact/send", (req, res) => {
       res.render("messagesent");   
 });
 
+
+// ----------------------------------------------------------------------------------------
 
 // Starts a UNIX socket and listens for connections on the given path
 app.listen(process.env.PORT, process.env.IP, () => {
