@@ -1,1 +1,4 @@
-website/public/js/* linguist-vendored
+website/public/js/jquery-2.1.3.min.js linguist-vendored
+website/public/js/preloader.js linguist-vendored
+website/public/js/index.js linguist-vendored
+website/public/js/blob.js linguist-vendored
