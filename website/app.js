@@ -17,6 +17,12 @@ app.use(express.static("public"));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
+// Make the current user info (JSON if logged in else undefined) available on every ejs template
+// app.use((req, res, next) => {
+//     res.locals.currentUser = req.user;
+//     next();
+// });
+
 app.use(require("express-session")({
     secret: "Vasu is actually pretty frickin funny",
     resave: false,
@@ -55,18 +61,12 @@ app.get("/about", (req, res) => {
 // isLoggedIn is a middleware function at the bottom to check if user is still logged in
 app.get("/:username", isLoggedIn, (req, res) => {
     // stop user from accessing another accounts if they're logged in or are loggin in
-    if(req.params.username == req.user.username) {
+    if(req.params.username === req.user.username) {
         // render account page and pass the current user session details to template
         res.render("account", {user: req.user});
     } else {
-        // if logged in user types the name of another user in address bar destroy their
-        // session and redirect to login page
-        req.session.destroy((err) => {
-            if(err) {
-                  console.error(err);
-            }
-            res.redirect("/account/login");
-        });
+        // if logged in user types the name of another user in address redirect them to there account
+        res.redirect("/" + req.user.username);
     }
 });
 
