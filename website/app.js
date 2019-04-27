@@ -57,6 +57,13 @@ app.get("/about", (req, res) => {
       res.render("about");   
 });
 
+// Dashboard route
+// Middleware dashboardLogin() to redirect user to dashboard of their account if logged in
+// else redirect to /dashboard/login
+app.get("/dashboard", dashboardLogin, (req, res) => {
+      res.redirect("/" + req.user.username + "#dashboard");
+});
+
 // User (stored in mongodb) account page - Show Route
 // isLoggedIn is a middleware function at the bottom to check if user is still logged in
 app.get("/:username", isLoggedIn, (req, res) => {
@@ -103,6 +110,11 @@ app.get("/account/login", (req, res) => {
       res.render("login");   
 });
 
+// Dashboard login page
+app.get("/dashboard/login", (req, res) => {
+      res.render("dashboard-login"); 
+});
+
 // Logging in logic
 // middleware pass.authenticate runs after call to /account/login and before (req, res)
 app.post("/account/login", passport.authenticate("local", {
@@ -111,6 +123,15 @@ app.post("/account/login", passport.authenticate("local", {
 }), (req, res) => {
        res.redirect("/" + req.body.username);
 });
+
+// Dashboard login logic
+app.post("/dashboard/login", passport.authenticate("local", {
+    //   successRedirect: "/user",
+      failureRedirect: "/dashboard"
+}), (req, res) => {
+      res.redirect("/" + req.user.username + "#dashboard");
+});
+
 
 // Logout route
 app.get("/account/logout", (req, res) => {
@@ -128,6 +149,15 @@ function isLoggedIn(req, res, next) {
             return next();
       }
       res.redirect("/account/login");
+}
+
+// Middleware function dashboardLogin() to check if user is logged in to dashboard 
+// then redirect to local ip dashboard else render login page
+function dashboardLogin(req, res, next) {
+      if(req.isAuthenticated()) {
+          return next();
+      }
+      res.redirect("/dashboard/login");
 }
 
 
@@ -199,6 +229,6 @@ app.get('*', function(req, res){
 // ----------------------------------------------------------------------------------------
 
 // Starts a UNIX socket and listens for connections on the given path
-app.listen(process.env.PORT, process.env.IP, () => {
+app.listen(process.env.PORT, process.env.IP,  () => {
     console.log("üAutomate server has started...");
 });
