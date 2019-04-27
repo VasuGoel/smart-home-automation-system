@@ -103,57 +103,37 @@ void loop(){
             
             client.println("<!DOCTYPE html><html>");                                                                                   // Display the HTML web page
             client.println("<head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">");
-            client.println("<title>üAutomate</title>");
+            client.println("<title>Dashboard - üAutomate</title>");
+            client.println("<link rel=\"shortcut icon\" href=\"https://i.ibb.co/4WQtWLr/favicon.png\" type=\"image/x-icon\">");
             client.println("<link rel=\"stylesheet\" type=\"text/css\" href=\"https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css\">");
 
-                                                                                                                                       // CSS to style the on/off buttons 
-            client.println("<style>i.icon {font-size: 1.3em;padding-right: 1.5em;}");
+                                                                                                                                       // CSS to style the dashboard
+            client.println("<style>body { background-color: #1a202b; }; i.icon {font-size: 1.3em;padding-right: 1.5em;}");
             client.println(".item {    font-size: 1.05em;}</style></head>");
                 
             // Pointing Menu                                                                                                                       // Web Page Heading
-            client.println("<body>                <!--Pointing Menu-->        <div class=\"ui fixed inverted menu borderless\">            <div class=\"ui container\">                <div class=\"item\">                    <a href=\"/\">                        <i class=\"code icon\"></i>                        üAutomate                    </a>                </div>                <a class=\"item\" href=\"/dashboard\">Dashboard</a>                                <div class=\"right menu\">                    <a class=\"item\">Sign Up</a>                    <a class=\"item\">Login</a>                </div>                </div>        </div>");
+            client.println("<body>      <div class=\"ui fixed inverted menu borderless\">     <div class=\"ui container\">      <div class=\"item\"> <a> üAutomate </a> </div>      <a class=\"item\">Dashboard</a>     <a class=\"item\" href=\"https://www.github.com/VasuGoel\" target=\"_blank\">GitHub</a>     <div class=\"right menu\"> <a class=\"item\">Signed in</a> </div>    </div>     </div>");
+            
+            // Container
+            client.println("<div class=\"ui main text container raised segment\" style=\"margin-top: 5em; margin-bottom: 5em\">       <div class=\"ui items\" style=\"padding: 2em; margin-top: 0\">");
+            
+            // Header
+            client.println("<h2 class=\"ui icon header center aligned\"> <i class=\"settings icon\"></i> <div class=\"content\"> üAutomate Dashboard <div class=\"sub header\">Manage your entire home with just a simple click.</div> </div> </h2>         <div class=\"ui divider\" style=\"margin-bottom: 50px\"></div>");
+            
+            
             // Switch 1
-            client.println("<div class=\"ui main text container raised segment\" style=\"margin-top: 7em\">            <div class=\"ui items\" style=\"padding: 2em; margin-top: 0\">                        <h1 class=\"ui header\">Dashboard</h1>            <div class=\"ui divider\" style=\"margin-bottom: 50px\"></div>               <div class=\"item\">                <div class=\"ui small image\">                    <img src=\"https://images.unsplash.com/photo-1492539161849-b2b18e79c85f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60\">                </div>                <div class=\"middle aligned content\">                    <div class=\"header\">                        GPIO 5                    </div>                    <div class=\"description\">                        <p>Controls the Bulb</p>                    </div>                    <div class=\"extra\">");          if (output5State=="off") {    client.println("<a href=\"/5/on\"><button class=\"ui button\">ON</button></a>"); } else {client.println("<a href=\"/5/off\"><button class=\"ui button\">OFF</button></a>"); }                    client.println("</div>                </div>            </div>            <div class=\"ui divider\"></div>");
+            client.println("<div class=\"item\">        <div class=\"ui small image\"> <img src=\"https://images.unsplash.com/photo-1492539161849-b2b18e79c85f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60\"> </div>       <div class=\"middle aligned content\">        <div class=\"header\"> GPIO 5 </div>        <div class=\"description\"> <p>Controls the Bulb</p> </div>         <div class=\"extra\">");        if (output5State=="off") { client.println("<a href=\"/5/on\"> <button class=\"ui secondary button right floated\"> Turn ON </button> </a>"); } else { client.println("<a href=\"/5/off\"> <button class=\"ui secondary button right floated\"> Turn OFF </button> </a>"); }       client.println("</div>  </div>  </div>        <div class=\"ui divider\"></div>");
             
             // Switch 2 
-            client.println("<div class=\"item\">                <div class=\"ui small image\">                    <img src=\"https://images.unsplash.com/photo-1523437345381-db5ee4df9c04?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60\">                </div>                <div class=\"middle aligned content\">                    <div class=\"header\">                        GPIO 4                    </div>                    <div class=\"description\">                        <p>Controls the Fan</p>                    </div>                    <div class=\"extra\">");      if (output4State=="off") {    client.println("<a href=\"/4/on\"><button class=\"ui button\">ON</button></a>"); } else {client.println("<a href=\"/4/off\"><button class=\"ui button\">OFF</button></a>"); }                   client.println("</div>                </div>            </div>            <div class=\"ui divider\"></div>");
+            client.println("<div class=\"item\">        <div class=\"ui small image\"> <img src=\"https://images.unsplash.com/photo-1523437345381-db5ee4df9c04?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60\"> </div>       <div class=\"middle aligned content\">        <div class=\"header\"> GPIO 4 </div>        <div class=\"description\"> <p>Controls the Fan</p> </div>          <div class=\"extra\">");        if (output4State=="off") { client.println("<a href=\"/4/on\"> <button class=\"ui secondary button right floated\"> Turn ON </button> </a>"); } else { client.println("<a href=\"/4/off\"> <button class=\"ui secondary button right floated\"> Turn OFF </button> </a> "); }      client.println("</div>  </div>  </div>        <div class=\"ui divider\"></div>");
             
             // Switch 3
-            client.println("<div class=\"item\">                <div class=\"ui small image\">                    <img src=\"https://images.unsplash.com/photo-1541480601022-2308c0f02487?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60\">                </div>                <div class=\"middle aligned content\">                    <div class=\"header\">                        GPIO 14                    </div>                    <div class=\"description\">                        <p>Controls the Alarm</p>                  </div>                    <div class=\"extra\">");     if (output14State=="off") {    client.println("<a href=\"/14/on\"><button class=\"ui button\">ON</button></a>"); } else {client.println("<a href=\"/14/off\"><button class=\"ui button\">OFF</button></a>"); }               client.println("</div>                </div>            </div>            <div class=\"ui divider\"></div>");
+            client.println("<div class=\"item\">        <div class=\"ui small image\"> <img src=\"https://images.unsplash.com/photo-1541480601022-2308c0f02487?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60\"> </div>       <div class=\"middle aligned content\">        <div class=\"header\"> GPIO 14 </div>       <div class=\"description\"> <p>Controls the Alarm</p> </div>        <div class=\"extra\">");        if (output14State=="off") { client.println("<a href=\"/14/on\"> <button class=\"ui secondary button right floated\"> Turn ON </button> </a>"); } else { client.println("<a href=\"/14/off\"> <button class=\"ui secondary button right floated\"> Turn OFF </button> </a>"); }    client.println("</div>  </div>  </div>        <div class=\"ui divider\"></div>");
             
             // Switch 4
-            client.println("<div class=\"item\">                <div class=\"ui small image\">                    <img src=\"https://images.unsplash.com/photo-1541519920349-237d9c325cac?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60\">                </div>                <div class=\"middle aligned content\">                    <div class=\"header\">                        GPIO 12                    </div>                    <div class=\"description\">                        <p>Controls the LEDs</p>                    </div>                    <div class=\"extra\">");     if (output12State=="off") {    client.println("<a href=\"/12/on\"><button class=\"ui button\">ON</button></a>"); } else {client.println("<a href=\"/12/off\"><button class=\"ui button\">OFF</button></a>"); }              client.println("</div>                </div>            </div>        </div>     </div>");
+            client.println("<div class=\"item\">        <div class=\"ui small image\"> <img src=\"https://images.unsplash.com/photo-1541519920349-237d9c325cac?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60\"> </div>       <div class=\"middle aligned content\">        <div class=\"header\"> GPIO 12 </div>       <div class=\"description\"> <p>Controls the LEDs</p> </div>         <div class=\"extra\">");        if (output12State=="off") { client.println("<a href=\"/12/on\"> <button class=\"ui secondary button right floated\"> Turn ON </button> </a>"); } else { client.println("<a href=\"/12/off\"> <button class=\"ui secondary button right floated\"> Turn ON </button></a>"); }      client.println("</div>  </div>  </div>  </div>");
             
-                                                                                                                                
-            /*if (output5State=="off") {                                                                                        // If the output5State is off, it displays the ON button  
-              client.println("<p><a href=\"/5/on\"><button class=\"button\">ON</button></a></p>");
-            } else {
-              client.println("<p><a href=\"/5/off\"><button class=\"button button2\">OFF</button></a></p>");
-            } 
-               
-            
-            client.println("<p>GPIO 4 - State " + output4State + "</p>");                                                     // Display current state, and ON/OFF buttons for GPIO 4       
-            if (output4State=="off") {                                                                                        // If the output4State is off, it displays the ON button
-              client.println("<p><a href=\"/4/on\"><button class=\"button\">ON</button></a></p>");
-            } else {
-              client.println("<p><a href=\"/4/off\"><button class=\"button button2\">OFF</button></a></p>");
-            }
-  
-            client.println("<p>GPIO 14 - State " + output14State + "</p>");                                                   // Display current state, and ON/OFF buttons for GPIO 14       
-            if (output14State=="off") {                                                                                       // If the output14State is off, it displays the ON button
-              client.println("<p><a href=\"/14/on\"><button class=\"button\">ON</button></a></p>");
-            } else {
-              client.println("<p><a href=\"/14/off\"><button class=\"button button2\">OFF</button></a></p>");
-            }
-  
-            client.println("<p>GPIO 12 - State " + output12State + "</p>");                                                   // Display current state, and ON/OFF buttons for GPIO 12       
-            if (output12State=="off") {                                                                                       // If the output4State is off, it displays the ON button 
-              client.println("<p><a href=\"/12/on\"><button class=\"button\">ON</button></a></p>");
-            } else {
-              client.println("<p><a href=\"/12/off\"><button class=\"button button2\">OFF</button></a></p>");
-            } 
-            */
-            client.println("</body></html>");
+            client.println("</div> </body> </html>");
             
             client.println();                                                       // The HTTP response ends with another blank line
             // Break out of the while loop
