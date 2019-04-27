@@ -17,12 +17,6 @@ app.use(express.static("public"));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
-// Make the current user info (JSON if logged in else undefined) available on every ejs template
-// app.use((req, res, next) => {
-//     res.locals.currentUser = req.user;
-//     next();
-// });
-
 app.use(require("express-session")({
     secret: "Vasu is actually pretty frickin funny",
     resave: false,
@@ -36,6 +30,13 @@ app.use(passport.session());
 passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
+
+
+// Make the current user info (JSON if logged in else undefined) available on every ejs template
+app.use((req, res, next) => {
+    res.locals.currentUser = req.user;
+    next();
+});
 
 
 // ----------------------------------------------------------------------------------------
@@ -132,7 +133,6 @@ app.post("/dashboard/login", passport.authenticate("local", {
       res.redirect("/" + req.user.username + "#dashboard");
 });
 
-
 // Logout route
 app.get("/account/logout", (req, res) => {
       req.session.destroy((err) => {
@@ -218,6 +218,7 @@ app.post("/contact", (req, res) => {
 app.get("/contact/send", (req, res) => {
       res.render("messagesent");   
 });
+
 
 // ----------------------------------------------------------------------------------------
 
